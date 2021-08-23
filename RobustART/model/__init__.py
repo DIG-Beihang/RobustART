@@ -1,0 +1,1 @@
+from prototype.prototype.model import get_model

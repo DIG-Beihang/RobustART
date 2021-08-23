@@ -1,0 +1,84 @@
+model:
+    type: mixer_b16_224
+    kwargs:
+        drop_path: 0.0
+        drop_path_rate: 0.0
+
+dist:
+    sync: False
+
+optimizer:
+    type: AdamW
+    no_wd: 
+        fc: False
+        norm: False
+    kwargs:
+        weight_decay: 0.05
+
+lr_scheduler:
+    type: CosineEpoch
+    kwargs:
+        base_lr: 0.000001
+        warmup_lr: 0.001
+        min_lr: 0.00001
+        # warmup_steps: 2500
+        # max_iter: 125000
+        warmup_epoch: 2
+        max_epoch: 100
+
+label_smooth: 0.1
+
+#mixup: 0.2
+#cutmix: 1.0
+
+ema:
+    enable: False
+
+data:
+    type: imagenet
+    read_from: mc
+    use_dali: True
+    batch_size: 32
+    num_workers: 4
+    pin_memory: True
+    input_size: 224
+    test_resize: 256
+
+    train:
+        root_dir: /mnt/lustre/share/images/train/
+        meta_file: /mnt/lustre/share/images/meta/train.txt
+        image_reader:
+            type: pil
+        sampler:
+            type: distributed_iteration
+        transforms:
+            type: STANDARD
+
+    test:
+        root_dir: /mnt/lustre/share/images/val/
+        meta_file: /mnt/lustre/share/images/meta/val.txt
+        image_reader:
+            type: pil
+        sampler:
+            type: distributed
+        transforms:
+            type: ONECROP
+        evaluator:
+            type: imagenet
+            kwargs:
+                topk: [1, 5]
+
+saver:
+    print_freq: 10
+    val_freq: 2500
+    save_many: False
+    # pretrain:
+    #     path: checkpoints/ckpt.pth.tar
+        # path: checkpoints/mixer_b16_224.pth
+        # ignore:
+        #    key:
+        #         - last_iter
+    #         model:
+    #             - module.fc.weight
+    #             - module.fc.bias
+
