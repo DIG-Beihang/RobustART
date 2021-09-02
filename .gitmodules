@@ -1,0 +1,3 @@
+[submodule "prototype"]
+	path = prototype
+	url = https://github.com/TheGreatCold/prototype.git
