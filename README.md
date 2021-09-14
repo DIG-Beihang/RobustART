@@ -37,7 +37,7 @@ for some light-weight architectures (e.g., EfficientNet, MobileNetV2, and Mo-
 You use conda to create a virtual environment to run this project.
 
 ```bash
-git --recurse-submodules https://github.com/DIG-Beihang/RobustART.git
+git --recurse-submodules git@github.com:DIG-Beihang/RobustART.git
 cd robustART
 conda create --name RobustART
 conda activate RobustART
