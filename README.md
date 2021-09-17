@@ -41,7 +41,7 @@ git clone --recurse-submodules git@github.com:DIG-Beihang/RobustART.git
 cd robustART
 conda create --name RobustART
 conda activate RobustART
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 Quick Start
