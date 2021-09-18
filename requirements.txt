@@ -4,7 +4,6 @@ torchvision~=0.10.0
 pillow~=8.3.1
 numpy~=1.19.2
 scikit-learn~=0.24.2
-yaml~=0.2.5
 pyyaml~=5.4.1
 prettytable~=2.1.0
 requests~=2.26.0
@@ -16,3 +15,11 @@ scikit-image~=0.18.2
 wand~=0.6.6
 scipy~=1.7.0
 tqdm~=4.59.0
+easydict
+tensorboardXskimage
+einops
+scikit-image
+wand
+opencv-python
+adversarial-robustness-toolbox
+ffmpeg-python
