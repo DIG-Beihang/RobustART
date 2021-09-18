@@ -43,7 +43,8 @@ conda create --name RobustART
 conda activate RobustART
 pip install -r requirements.txt
 ```
-
+After this, you should installl pytorch and torchvision package which meet your GPU and CUDA version according to https://pytorch.org
+	
 Quick Start
 =====================================
 
