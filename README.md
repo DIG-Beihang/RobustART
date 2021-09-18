@@ -39,7 +39,7 @@ You use conda to create a virtual environment to run this project.
 ```bash
 git clone --recurse-submodules https://github.com/DIG-Beihang/RobustART.git
 cd robustART
-conda create --name RobustART
+conda create --name RobustART python=3.6.9
 conda activate RobustART
 pip install -r requirements.txt
 ```
@@ -70,7 +70,7 @@ Example of adding ImageNet-C noise for image
 	from RobustART.noise import AddNoise
 	NoiseClass = AddNoise(noise_type='imagenet-c')
 	# set the config of one kind of noise
-	NoiseClass.setconfig(corruption_name='gaussian_noise')
+	NoiseClass.set_config(corruption_name='gaussian_noise')
 	image_addnoise = NoiseClass.add_noise(image='test_input.jpeg')
 
 Training Pipeline
