@@ -21,7 +21,7 @@ class AddNoise(object):
         assert set(kwargs.keys()) & set(self.config.keys()) == set(kwargs.keys()), \
            f'Key Error! Unexpect Keys {set(kwargs.keys()) - set(self.config.keys())}'
 
-        self.config = self.config.update(kwargs)
+        self.config.update(kwargs)
         print(f'Config for {self.noise_type} Noise')
         print(self.config)
 
