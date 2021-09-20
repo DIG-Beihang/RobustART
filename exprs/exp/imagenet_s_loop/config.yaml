@@ -45,7 +45,7 @@ lms:                      # large model support: utilize cpu to save gpu memory
 
 data:                     # data details
     type: imagenet        # choices = {'imagenet', 'custom'}
-    read_from: mc         # choices = {'mc', 'fs', 'fake', 'osg'}
+    read_from: fake         # choices = {'mc', 'fs', 'fake', 'osg'}
     use_dali: False       # whether to use NVIDIA dali dataloader
     batch_size: 64        # batch size in one GPU
     num_workers: 4        # number of subprocesses for data loading

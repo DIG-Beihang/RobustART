@@ -44,7 +44,7 @@ lms:                      # large model support: utilize cpu to save gpu memory
 
 data:                     # data details
     type: imagenet        # choices = {'imagenet', 'custom'}
-    read_from: mc         # choices = {'mc', 'fs', 'fake', 'osg'}
+    read_from: fake         # choices = {'mc', 'fs', 'fake', 'osg'}
     use_dali: False       # whether to use NVIDIA dali dataloader
     batch_size: 4        # batch size in one GPU
     num_workers: 4        # number of subprocesses for data loading
@@ -79,7 +79,7 @@ data:                     # data details
 
     test:                             # testing data details
         imagenet_p: True
-        root_dir: "/mnt/lustre/share/imagenet_noise/imagenet_p"
+        root_dir: "/mnt/lustre/share/imagenet_noise/imagenet_p_mini"
         sampler:                      # sampler details
             type: distributed         # non-repeated sampling
         transforms:                   # torchvision transforms, flexible

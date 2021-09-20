@@ -37,7 +37,7 @@ ema:
 
 data:
     type: imagenet
-    read_from: mc
+    read_from: fake
     use_dali: True
     batch_size: 32
     num_workers: 4

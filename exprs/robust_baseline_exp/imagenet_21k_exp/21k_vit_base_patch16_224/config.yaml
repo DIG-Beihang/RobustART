@@ -43,7 +43,7 @@ ema:
 
 data:
     type: imagenet
-    read_from: mc
+    read_from: fake
     use_dali: false
     use_ranked: true
     batch_size: 64
