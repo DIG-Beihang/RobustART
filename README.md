@@ -113,6 +113,6 @@ We provided metrics APIs, so that you can use these APIs to evaluate results for
 @article{tang2021robustart,
 title={RobustART: Benchmarking Robustness on Architecture Design and Training Techniques},
 author={Shiyu Tang and Ruihao Gong and Yan Wang and Aishan Liu and Jiakai Wang and Xinyun Chen and Fengwei Yu and Xianglong Liu and Dawn Song and Alan Yuille and Philip H.S. Torr and Dacheng Tao},
-journal={https://openreview.net/forum?id=wu1qmnC32fB},
+journal={https://arxiv.org/pdf/2109.05211.pdf},
 year={2021}}
 ```
