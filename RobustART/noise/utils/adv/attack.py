@@ -5,6 +5,9 @@ import torch
 import torch.nn as nn
 from .Attacks.autoattack import AutoAttack
 from .Attacks.imfgsm_attack import _mim_whitebox
+from .Attacks.ILLC import ILLC
+from .Attacks.PA import PA
+from .Attacks.RLLC import RLLC
 
 
 def clip_l2_norm(cln_img, adv_img, eps):
@@ -48,5 +51,29 @@ def pgd_l1(input, label, model, eps, input_size, eps_step, max_iter, batch_size)
     adv_pgdl1 = attack.generate(x=input.cpu(), y=label.cpu())
     return torch.from_numpy(adv_pgdl1).cuda()
 
+def illc(input, label, model, device, istarget, epsilon, epsilon_iter, num_steps):
+    illc_att = ILLC(model=model, device=device, IsTargeted=istarget, epsilon=epsilon, epsilon_iter=epsilon_iter, num_steps=num_steps)
+    adv_illc = illc_att.generate(xs=input, ys_target=label)
+    return adv_illc.to(device)
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf}
+def rllc(input, label, model, device, istarget, epsilon, alpha):
+    rllc_att = RLLC(model=model, device=device, IsTargeted=istarget, epsilon=epsilon, alpha=alpha)
+    adv_rllc = rllc_att.generate(xs=input, ys_target=label)
+    return adv_rllc.to(device)
+
+def pa(input, label, model, device, istarget, patch_path, position):
+    pa_att = PA(model=model, device=device, IsTargeted=istarget, patch_path=patch_path, position=position)
+    adv_pa = pa_att.generate(xs=input, ys=label)
+    return adv_pa.to(device)
+
+attack_list = {
+    'pgd_l1': pgd_l1,
+    'pgd_linf': pgd_linf,
+    'pgd_l2': pgd_l2,
+    'fgsm': fgsm,
+    'autoattack_linf': autoattack_linf,
+    'mim_linf': mim_linf,
+    'illc': illc,
+    'rllc': rllc,
+    'pa': pa,
+}

@@ -15,8 +15,8 @@ scikit-image~=0.18.2
 wand~=0.6.6
 scipy~=1.7.0
 tqdm~=4.59.0
-easydict
-tensorboardXskimage
+# easydict
+# tensorboardXskimage
 einops
 scikit-image
 wand
