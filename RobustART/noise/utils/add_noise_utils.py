@@ -1,10 +1,11 @@
 from PIL import Image
 from RobustART.noise.utils.imagenet_c import corrupt
-from RobustART.noise.utils.adv import pgd_l1, pgd_l2, pgd_linf, clip_l2_norm, autoattack_linf, mim_linf, fgsm
+from RobustART.noise.utils.adv import *
 from .imagenet_s_gen import ImageTransfer
 
 
-noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1']
+noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1',
+              'llc', 'om', 'jsm']
 
 default_config = {
     'imagenet-s': {'decoder_type': 'pil', 'resize_type': 'pil-bilinear', 'transform_type': 'val'},
@@ -46,6 +47,9 @@ function_dict = {
     'pgd_l2': pgd_l2,
     'fgsm': fgsm,
     'autoattack_linf': autoattack_linf,
-    'mim_linf': mim_linf
+    'mim_linf': mim_linf,
+    'jsm': jsm,
+    'llc': llc,
+    'om': om,
 }
 

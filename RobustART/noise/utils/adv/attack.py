@@ -5,6 +5,9 @@ import torch
 import torch.nn as nn
 from .Attacks.autoattack import AutoAttack
 from .Attacks.imfgsm_attack import _mim_whitebox
+from .Attacks.llc import LLC
+from .Attacks.om import OM
+from .Attacks.jsm import JSM
 
 
 def clip_l2_norm(cln_img, adv_img, eps):
@@ -49,4 +52,22 @@ def pgd_l1(input, label, model, eps, input_size, eps_step, max_iter, batch_size)
     return torch.from_numpy(adv_pgdl1).cuda()
 
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf}
+def llc(xs, ys, model, device, IsTargeted, eps):
+    llc_att = LLC(model=model, device=device, IsTargeted=IsTargeted, epsilon=eps)
+    adv_llc = llc_att.generate(xs=xs, ys=ys)
+    return adv_llc
+
+
+def om(xs, ys, model, device, IsTargeted, **kwargs):
+    att = OM(model=model, device=device, IsTargeted=IsTargeted, **kwargs)
+    adv_om = att.generate(xs=xs, ys=ys)
+    return adv_om
+
+
+def jsm(xs, ys, model, device, IsTargeted, **kwargs):
+    att = JSM(model=model, device=device, IsTargeted=IsTargeted, **kwargs)
+    adv_jsm = att.generate(xs=xs, ys=ys)
+    return adv_jsm
+
+
+attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'llc': llc, 'om': om, 'jsm': jsm}
