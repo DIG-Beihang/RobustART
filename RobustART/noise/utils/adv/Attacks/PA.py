@@ -50,8 +50,8 @@ class PA(Attack):
         @return: None
         """
         # 干扰贴图的存放路径
-        self.patch_path = kwargs.get("patch_path", "fusionpatch.png")
-        # 贴图要放置的位置，默认是224X224的图片
+        self.patch_path = kwargs.get("patch_path", "")
+        # 贴图要放置的位置，默认是128X128的图片
         self.position = kwargs.get("position", "128,128")
 
     def save_patched_pic(self, adv_image, path):
