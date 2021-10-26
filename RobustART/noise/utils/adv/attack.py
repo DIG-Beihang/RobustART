@@ -5,6 +5,9 @@ import torch
 import torch.nn as nn
 from .Attacks.autoattack import AutoAttack
 from .Attacks.imfgsm_attack import _mim_whitebox
+from .Attacks.llc import LLC
+from .Attacks.om import OM
+from .Attacks.jsm import JSM
 from .Attacks.ba import BA
 from .Attacks.bim import BIM
 from .Attacks.blb import BLB
@@ -84,4 +87,20 @@ def ead(input, label, model, device, IsTargeted, kappa, lr, init_const, lower_bo
     adv_ead = ead_attack.generate(input, label)
     return adv_ead
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb}
+def llc(input, label, model, device, IsTargeted, epsilon):
+    llc_att = LLC(model=model, device=device, IsTargeted=IsTargeted, epsilon=epsilon)
+    adv_llc = llc_att.generate(xs=input, ys=label)
+    return adv_llc
+
+def om(input, label, model, device, IsTargeted, kappa, class_type_number, lr, init_const, lower_bound, upper_bound, max_iter, binary_search_steps, noise_count, noise_magnitude):
+    att = OM(model=model, device=device, IsTargeted=IsTargeted, kappa=kappa, class_type_number=class_type_number, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, noise_count=noise_count, noise_magnitude=noise_magnitude)
+    adv_om = att.generate(xs=input, ys=label)
+    return adv_om
+
+def jsm(input, label, model, device, IsTargeted, theta, gamma):
+    att = JSM(model=model, device=device, IsTargeted=IsTargeted, theta=theta, gamma=gamma)
+    adv_jsm = att.generate(xs=input, ys=label)
+    return adv_jsm
+
+attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb, 'llc': llc, 'om': om, 'jsm': jsm}
+
