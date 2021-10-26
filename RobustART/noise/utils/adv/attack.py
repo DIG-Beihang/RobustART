@@ -5,6 +5,9 @@ import torch
 import torch.nn as nn
 from .Attacks.autoattack import AutoAttack
 from .Attacks.imfgsm_attack import _mim_whitebox
+from .Attacks.ba import BA
+from .Attacks.bim import BIM
+from .Attacks.blb import BLB
 from .Attacks.cw2 import CW2
 from .Attacks.deepfool import DEEPFOOL
 from .Attacks.ead import EAD
@@ -51,6 +54,21 @@ def pgd_l1(input, label, model, eps, input_size, eps_step, max_iter, batch_size)
     adv_pgdl1 = attack.generate(x=input.cpu(), y=label.cpu())
     return torch.from_numpy(adv_pgdl1).cuda()
 
+def ba(input, label, model, eps, delta, lower_bound, upper_bound, max_iter, binary_search_steps, batch_size, step_adapt, sample_size, init_size):
+    attack = BA(model=model, eps=eps, delta=delta, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, batch_size=batch_size, step_adapt=step_adapt, sample_size=sample_size, init_size=init_size)
+    adv_ba = attack.generate(xs=input, ys=label)
+    return adv_ba
+
+def bim(input, label, model, eps, eps_iter, num_steps):
+    attack = BIM(model=model, eps=eps, eps_iter=eps_iter, num_steps=num_steps)
+    adv_bim = attack.generate(xs=input, ys=label)
+    return adv_bim
+
+def blb(input, label, model, init_const, max_iter, binary_search_steps):
+    attack = BLB(model=model, init_const=init_const, max_iter=max_iter, binary_search_steps=binary_search_steps)
+    adv_blb = attack.generate(xs=input, ys=label)
+    return adv_blb
+
 def cw2(input, label, model, device, IsTarget, kappa, lr, init_const, lower_bound, upper_bound, max_iter, binary_search_steps):
     cw2_attack = CW2(model=model, device=device, IsTarget=IsTarget, kappa=kappa, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps)
     adv_cw = cw2_attack.generate(input, label)
@@ -66,4 +84,4 @@ def ead(input, label, model, device, IsTargeted, kappa, lr, init_const, lower_bo
     adv_ead = ead_attack.generate(input, label)
     return adv_ead
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead}
+attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb}
