@@ -52,21 +52,21 @@ def pgd_l1(input, label, model, eps, input_size, eps_step, max_iter, batch_size)
     return torch.from_numpy(adv_pgdl1).cuda()
 
 
-def llc(xs, ys, model, device, IsTargeted, eps):
-    llc_att = LLC(model=model, device=device, IsTargeted=IsTargeted, epsilon=eps)
-    adv_llc = llc_att.generate(xs=xs, ys=ys)
+def llc(input, label, model, device, IsTargeted, epsilon):
+    llc_att = LLC(model=model, device=device, IsTargeted=IsTargeted, epsilon=epsilon)
+    adv_llc = llc_att.generate(xs=input, ys=label)
     return adv_llc
 
 
-def om(xs, ys, model, device, IsTargeted, **kwargs):
-    att = OM(model=model, device=device, IsTargeted=IsTargeted, **kwargs)
-    adv_om = att.generate(xs=xs, ys=ys)
+def om(input, label, model, device, IsTargeted, kappa, class_type_number, lr, init_const, lower_bound, upper_bound, max_iter, binary_search_steps, noise_count, noise_magnitude):
+    att = OM(model=model, device=device, IsTargeted=IsTargeted, kappa=kappa, class_type_number=class_type_number, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, noise_count=noise_count, noise_magnitude=noise_magnitude)
+    adv_om = att.generate(xs=input, ys=label)
     return adv_om
 
 
-def jsm(xs, ys, model, device, IsTargeted, **kwargs):
-    att = JSM(model=model, device=device, IsTargeted=IsTargeted, **kwargs)
-    adv_jsm = att.generate(xs=xs, ys=ys)
+def jsm(input, label, model, device, IsTargeted, theta, gamma):
+    att = JSM(model=model, device=device, IsTargeted=IsTargeted, theta=theta, gamma=gamma)
+    adv_jsm = att.generate(xs=input, ys=label)
     return adv_jsm
 
 
