@@ -4,8 +4,7 @@ from RobustART.noise.utils.adv import pgd_l1, pgd_l2, pgd_linf, clip_l2_norm, au
 from .imagenet_s_gen import ImageTransfer
 
 
-noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1',
-              'llc', 'om', 'jsm']
+noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1', 'llc', 'om', 'jsm']
 
 default_config = {
     'imagenet-s': {'decoder_type': 'pil', 'resize_type': 'pil-bilinear', 'transform_type': 'val'},
@@ -18,7 +17,7 @@ default_config = {
     'pgd_l1': {'model': None, 'eps': 1600.0, 'input_size': 224, 'eps_step': 120, 'max_iter': 20, 'batch_size': 16},
     'llc': {'model': None, 'device': None, 'IsTargeted': None, 'epsilon': 0.01},
     'jsm': {'model': None, 'device': None, 'IsTargeted': None, 'theta': 1.0, 'gamma': 0.001},
-    'om': {'model': None, 'device': None, 'IsTargeted': None, "kappa": 0, 'class_type_number': 1000, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 5, 'binary_search_steps': 3, 'noise_count': 20, 'noise_magnitude': 0.3},
+    'om': {'model': None, 'device': None, 'IsTargeted': None, 'kappa': 0, 'class_type_number': 1000, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 5, 'binary_search_steps': 3, 'noise_count': 20, 'noise_magnitude': 0.3},
 }
 
 
