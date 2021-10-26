@@ -16,10 +16,9 @@ default_config = {
     'autoattack_linf': {'model': None, 'norm': 'Linf', 'eps': 8/255, 'version': 'standard', 'verbose': False},
     'mim_linf': {'model': None, 'eps': 8/255, 'num_steps': 20, 'step_size': 0.002, 'decay_factor': 1.0},
     'pgd_l1': {'model': None, 'eps': 1600.0, 'input_size': 224, 'eps_step': 120, 'max_iter': 20, 'batch_size': 16},
-    'llc': {'epsilon': 0.01},
-    'jsm': {'theta': 1.0, 'gamma': 0.001},
-    'om': {"kappa": 0, 'class_type_number': 1000, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0,
-           'max_iter': 5, 'binary_search_steps': 3, 'noise_count': 20, 'noise_magnitude': 0.3},
+    'llc': {'model': None, 'device': None, 'IsTargeted': None, 'epsilon': 0.01},
+    'jsm': {'model': None, 'device': None, 'IsTargeted': None, 'theta': 1.0, 'gamma': 0.001},
+    'om': {'model': None, 'device': None, 'IsTargeted': None, "kappa": 0, 'class_type_number': 1000, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 5, 'binary_search_steps': 3, 'noise_count': 20, 'noise_magnitude': 0.3},
 }
 
 
