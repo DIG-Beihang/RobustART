@@ -1,10 +1,10 @@
 from PIL import Image
 from RobustART.noise.utils.imagenet_c import corrupt
-from RobustART.noise.utils.adv import pgd_l1, pgd_l2, pgd_linf, clip_l2_norm, autoattack_linf, mim_linf, fgsm, ba, bim, blb
+from RobustART.noise.utils.adv import pgd_l1, pgd_l2, pgd_linf, clip_l2_norm, autoattack_linf, mim_linf, fgsm, cw2, deepfool, ead, ba, bim, blb
 from .imagenet_s_gen import ImageTransfer
 
 
-noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1']
+noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1', 'cw2', 'deepfool', 'ead']
 
 default_config = {
     'imagenet-s': {'decoder_type': 'pil', 'resize_type': 'pil-bilinear', 'transform_type': 'val'},
@@ -17,7 +17,10 @@ default_config = {
     'pgd_l1': {'model': None, 'eps': 1600.0, 'input_size': 224, 'eps_step': 120, 'max_iter': 20, 'batch_size': 16},
     'ba': {'eps': 0.01, 'delta': 0.01, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 10, 'binary_search_steps': 20, 'batch_size': 8, 'step_adapt': 0.9, 'sample_size': 80, 'init_size': 200},
     'bim': {'eps': 0.1, 'eps_iter': 0.1, 'num_steps': 15},
-    'blb': {'init_const': 0.01, 'max_iter': 1000, 'binary_search_steps': 5}
+    'blb': {'init_const': 0.01, 'max_iter': 1000, 'binary_search_steps': 5},
+    'cw2': {'model': None, 'device': None, 'IsTarget': None, 'kappa': 0, 'lr': 0.2, 'init_const': 0.01, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 200, 'binary_search_steps': 4},
+    'deepfool': {'model': None, 'device': None, 'IsTarget': None, 'overshoot': 0.02, 'max_iter': 10},
+    'ead': {'model': None, 'device': None, 'IsTarget': None, 'kappa': 0, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 50, 'binary_search_steps': 3, 'class_type_number': 1000, 'beta': 1e-3, 'EN': True}
 }
 
 
@@ -52,6 +55,9 @@ function_dict = {
     'mim_linf': mim_linf,
     'ba': ba,
     'bim': bim,
-    'blb': blb
+    'blb': blb,
+    'cw2': cw2,
+    'deepfool': deepfool,
+    'ead': ead
 }
 

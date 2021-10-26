@@ -8,6 +8,9 @@ from .Attacks.imfgsm_attack import _mim_whitebox
 from .Attacks.ba import BA
 from .Attacks.bim import BIM
 from .Attacks.blb import BLB
+from .Attacks.cw2 import CW2
+from .Attacks.deepfool import DEEPFOOL
+from .Attacks.ead import EAD
 
 
 def clip_l2_norm(cln_img, adv_img, eps):
@@ -66,4 +69,19 @@ def blb(input, label, model, init_const, max_iter, binary_search_steps):
     adv_blb = attack.generate(xs=input, ys=label)
     return adv_blb
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'ba': ba, 'bim': bim, 'blb': blb}
+def cw2(input, label, model, device, IsTarget, kappa, lr, init_const, lower_bound, upper_bound, max_iter, binary_search_steps):
+    cw2_attack = CW2(model=model, device=device, IsTarget=IsTarget, kappa=kappa, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps)
+    adv_cw = cw2_attack.generate(input, label)
+    return adv_cw
+
+def deepfool(input, label, model, device, IsTarget, overshoot, max_iter):
+    deepfool_attack = DEEPFOOL(model=model, device=device, IsTarget=IsTarget, overshoot=overshoot, max_iter=max_iter)
+    adv_deepfool = deepfool_attack.generate(input, label)
+    return adv_deepfool
+
+def ead(input, label, model, device, IsTargeted, kappa, lr, init_const, lower_bound, upper_bound, max_iter, binary_search_steps, class_type_number, beta, EN):
+    ead_attack = EAD(model=model, device=device, IsTarget=IsTarget, kappa=kappa, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, class_type_number=class_type_number, beta=beta, EN=EN)
+    adv_ead = ead_attack.generate(input, label)
+    return adv_ead
+
+attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb}
