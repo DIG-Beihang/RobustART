@@ -28,8 +28,8 @@ default_config = {
     'illc': {'model': None, 'device': None, 'istarget': None, 'epsilon': 0.3, 'epsilon_iter': 0.5, 'num_steps': 10},
     'rllc': {'model': None, 'device': None, 'istarget': None, 'epsilon': 0.1, 'alpha': 0.4},
     'pa': {'model': None, 'device': None, 'istarget': None, 'patch_path': '', 'position': "128,128"},
-'rfgsm':{'model':None,'device':None,'IsTargeted':None,'eps':0.1,'alp':0.5,'xs':None,'ys':None},
-    'spsa':{'model':None,'device':None,'IsTargeted':None,'eps':0.05,'learning_rate':0.01,'delta':0.01,'spsa_samples':32,'spsa_iters':2,'is_debug':False,'sanity_checks':True,'nb_iter':20,'xs':None,'ys':None},
+    'rfgsm':{'model':None,'device':None,'IsTargeted':None,'eps':0.1,'alp':0.5},
+    'spsa':{'model':None,'device':None,'IsTargeted':None,'eps':0.05,'learning_rate':0.01,'delta':0.01,'spsa_samples':32,'spsa_iters':2,'is_debug':False,'sanity_checks':True,'nb_iter':20},
     'uap':{'model':None,'device':None,'IsTargeted':None,'dataset':'cifar10','deepfool_overshoot':0.02,'deepfool_max_iter':50,'fool_rate':0.5,'uni_max_iter':100,'epsilon':0.1},
     'zoo':{'model':None,'device':None,'IsTargeted':None,'solver':'Newton','resize_init_size':32,'img_h':224,'img_w':224,'num_channels':3,'use_resize':False,'class_type_number':10,'use_tanh':True,'confidence':0,'batch_size':32,'init_const':5,'max_iter':100,'binary_search_steps':1,'beta1':0.9,'beta2':0.999,'lr':1e-2,'reset_adam_after_found':False,'early_stop_iters':30,'ABORT_EARLY':True,'lower_bound':'0.0','upper_bound':1.0,'print_every':10,'use_log':True,'save_modifier':'','load_modifier':'','use_importance':False}
 }
