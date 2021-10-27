@@ -1,10 +1,10 @@
 from PIL import Image
 from RobustART.noise.utils.imagenet_c import corrupt
-from RobustART.noise.utils.adv import pgd_l1, pgd_l2, pgd_linf, clip_l2_norm, autoattack_linf, mim_linf, fgsm, cw2, deepfool, ead, ba, bim, blb, llc, jsm, om
+from RobustART.noise.utils.adv import pgd_l1, pgd_l2, pgd_linf, clip_l2_norm, autoattack_linf, mim_linf, fgsm, cw2, deepfool, illc, rllc, pa, ead, ba, bim, blb, llc, jsm, om
 from .imagenet_s_gen import ImageTransfer
 
 
-noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1', 'cw2', 'deepfool', 'ead', 'llc', 'om', 'jsm']
+noise_list = ['imagenet-s', 'imagenet-c', 'pgd_linf', 'pgd_l2', 'fgsm', 'autoattack_linf', 'mim_linf', 'pgd_l1', 'cw2', 'deepfool', 'illc', 'rllc', 'pa', 'ead', 'llc', 'om', 'jsm']
 
 
 default_config = {
@@ -24,7 +24,10 @@ default_config = {
     'blb': {'init_const': 0.01, 'max_iter': 1000, 'binary_search_steps': 5},
     'cw2': {'model': None, 'device': None, 'IsTarget': None, 'kappa': 0, 'lr': 0.2, 'init_const': 0.01, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 200, 'binary_search_steps': 4},
     'deepfool': {'model': None, 'device': None, 'IsTarget': None, 'overshoot': 0.02, 'max_iter': 10},
-    'ead': {'model': None, 'device': None, 'IsTarget': None, 'kappa': 0, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 50, 'binary_search_steps': 3, 'class_type_number': 1000, 'beta': 1e-3, 'EN': True}
+    'ead': {'model': None, 'device': None, 'IsTarget': None, 'kappa': 0, 'lr': 0.2, 'init_const': 0.02, 'lower_bound': 0.0, 'upper_bound': 1.0, 'max_iter': 50, 'binary_search_steps': 3, 'class_type_number': 1000, 'beta': 1e-3, 'EN': True},
+    'illc': {'model': None, 'device': None, 'istarget': None, 'epsilon': 0.3, 'epsilon_iter': 0.5, 'num_steps': 10},
+    'rllc': {'model': None, 'device': None, 'istarget': None, 'epsilon': 0.1, 'alpha': 0.4},
+    'pa': {'model': None, 'device': None, 'istarget': None, 'patch_path': '', 'position': "128,128"},
 }
 
 
@@ -65,6 +68,9 @@ function_dict = {
     'blb': blb,
     'cw2': cw2,
     'deepfool': deepfool,
-    'ead': ead
+    'ead': ead,
+    'illc': illc,
+    'rllc': rllc,
+    'pa': pa,
 }
 

@@ -5,6 +5,9 @@ import torch
 import torch.nn as nn
 from .Attacks.autoattack import AutoAttack
 from .Attacks.imfgsm_attack import _mim_whitebox
+from .Attacks.illc import ILLC
+from .Attacks.pa import PA
+from .Attacks.rllc import RLLC
 from .Attacks.llc import LLC
 from .Attacks.om import OM
 from .Attacks.jsm import JSM
@@ -57,6 +60,22 @@ def pgd_l1(input, label, model, eps, input_size, eps_step, max_iter, batch_size)
     adv_pgdl1 = attack.generate(x=input.cpu(), y=label.cpu())
     return torch.from_numpy(adv_pgdl1).cuda()
 
+
+def illc(input, label, model, device, istarget, epsilon, epsilon_iter, num_steps):
+    illc_att = ILLC(model=model, device=device, IsTargeted=istarget, epsilon=epsilon, epsilon_iter=epsilon_iter, num_steps=num_steps)
+    adv_illc = illc_att.generate(xs=input, ys_target=label)
+    return adv_illc.to(device)
+
+def rllc(input, label, model, device, istarget, epsilon, alpha):
+    rllc_att = RLLC(model=model, device=device, IsTargeted=istarget, epsilon=epsilon, alpha=alpha)
+    adv_rllc = rllc_att.generate(xs=input, ys_target=label)
+    return adv_rllc.to(device)
+
+def pa(input, label, model, device, istarget, patch_path, position):
+    pa_att = PA(model=model, device=device, IsTargeted=istarget, patch_path=patch_path, position=position)
+    adv_pa = pa_att.generate(xs=input, ys=label)
+    return adv_pa.to(device)
+
 def ba(input, label, model, eps, delta, lower_bound, upper_bound, max_iter, binary_search_steps, batch_size, step_adapt, sample_size, init_size):
     attack = BA(model=model, eps=eps, delta=delta, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, batch_size=batch_size, step_adapt=step_adapt, sample_size=sample_size, init_size=init_size)
     adv_ba = attack.generate(xs=input, ys=label)
@@ -83,7 +102,7 @@ def deepfool(input, label, model, device, IsTarget, overshoot, max_iter):
     return adv_deepfool
 
 def ead(input, label, model, device, IsTargeted, kappa, lr, init_const, lower_bound, upper_bound, max_iter, binary_search_steps, class_type_number, beta, EN):
-    ead_attack = EAD(model=model, device=device, IsTarget=IsTarget, kappa=kappa, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, class_type_number=class_type_number, beta=beta, EN=EN)
+    ead_attack = EAD(model=model, device=device, IsTargeted=IsTargeted, kappa=kappa, lr=lr, init_const=init_const, lower_bound=lower_bound, upper_bound=upper_bound, max_iter=max_iter, binary_search_steps=binary_search_steps, class_type_number=class_type_number, beta=beta, EN=EN)
     adv_ead = ead_attack.generate(input, label)
     return adv_ead
 
@@ -102,5 +121,5 @@ def jsm(input, label, model, device, IsTargeted, theta, gamma):
     adv_jsm = att.generate(xs=input, ys=label)
     return adv_jsm
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb, 'llc': llc, 'om': om, 'jsm': jsm}
+attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb, 'llc': llc, 'om': om, 'jsm': jsm, 'illc': illc, 'rllc': rllc, 'pa': pa}
 
