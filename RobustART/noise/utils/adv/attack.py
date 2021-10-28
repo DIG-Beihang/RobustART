@@ -17,6 +17,10 @@ from .Attacks.blb import BLB
 from .Attacks.cw2 import CW2
 from .Attacks.deepfool import DEEPFOOL
 from .Attacks.ead import EAD
+from .Attacks.rfgsm import RFGSM
+from .Attacks.spsa import SPSA
+from .Attacks.uap import UAP
+from .Attacks.zoo import ZOO
 
 
 def clip_l2_norm(cln_img, adv_img, eps):
@@ -121,5 +125,25 @@ def jsm(input, label, model, device, IsTargeted, theta, gamma):
     adv_jsm = att.generate(xs=input, ys=label)
     return adv_jsm
 
-attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb, 'llc': llc, 'om': om, 'jsm': jsm, 'illc': illc, 'rllc': rllc, 'pa': pa}
+def rfgsm(input,label,model, device, IsTargeted, eps, alp):
+    att = RFGSM(model, device, IsTargeted, eps=eps, alp=alp)
+    adv_xs=att.generate(xs=input,ys=label)
+    return adv_xs
+
+def spsa(input,label,model, device, IsTargeted, eps,learning_rate,delta,spsa_samples,spsa_iters,is_debug,sanity_checks,nb_iter):
+    att=SPSA(model,device,IsTargeted,eps=eps,learning_rate=learning_rate,delta=delta,spsa_samples=spsa_samples,spsa_iters=spsa_iters,is_debug=is_debug,sanity_checks=sanity_checks,nb_iter=nb_iter)
+    adv_xs=att.generate(xs=input,ys=label)
+    return adv_xs
+
+def uap(input,label,model, device, IsTargeted,dataset,deepfool_overshoot,deepfool_max_iter,fool_rate,uni_max_iter,epsilon):
+    att=UAP(model, device, IsTargeted,dataset=dataset,deepfool_overshoot=deepfool_overshoot,deepfool_max_iter=deepfool_max_iter,fool_rate=fool_rate,uni_max_iter=uni_max_iter,epsilon=epsilon)
+    adv_xs=att.generate(xs=input,ys=label)
+    return adv_xs
+
+def zoo(input,label,model, device, IsTargeted,solver,resize_init_size,img_h,img_w,num_channels,use_resize,class_type_number,use_tanh,confidence,batch_size,init_const,max_iter,binary_search_steps,beta1,beta2,lr,reset_adam_after_found,early_stop_iters,ABORT_EARLY,lower_bound,upper_bound,print_every,use_log,save_modifier,load_modifier,use_importance):
+    att=ZOO(model, device, IsTargeted,solver=solver,resize_init_size=resize_init_size,img_h=img_h,img_w=img_w,num_channels=num_channels,use_resize=use_resize,class_type_number=class_type_number,use_tanh=use_tanh,confidence=confidence,batch_size=batch_size,init_const=init_const,max_iter=max_iter,binary_search_steps=binary_search_steps,beta1=beta1,beta2=beta2,lr=lr,reset_adam_after_found=reset_adam_after_found,early_stop_iters=early_stop_iters,ABORT_EARLY=ABORT_EARLY,lower_bound=lower_bound,upper_bound=upper_bound,print_every=print_every,use_log=use_log,save_modifier=save_modifier,load_modifier=load_modifier,use_importance=use_importance)
+    adv_xs=att.generate(xs=input,ys=label)
+    return adv_xs
+
+attack_list = {'pgd_l1': pgd_l1, 'pgd_linf': pgd_linf, 'pgd_l2': pgd_l2, 'fgsm': fgsm, 'autoattack_linf': autoattack_linf, 'mim_linf': mim_linf, 'cw2': cw2, 'deepfool': deepfool, 'ead': ead, 'ba': ba, 'bim': bim, 'blb': blb, 'llc': llc, 'om': om, 'jsm': jsm, 'illc': illc, 'rllc': rllc, 'pa': pa,'rfgsm':rfgsm,'spsa':spsa,'uap':uap,'zoo':zoo}
 
