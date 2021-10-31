@@ -44,6 +44,7 @@ conda activate RobustART
 pip install -r requirements.txt
 ```
 After this, you should installl pytorch and torchvision package which meet your GPU and CUDA version according to https://pytorch.org
+And install nvidia dail according to https://docs.nvidia.com/deeplearning/dali/user-guide/docs/installation.html
 	
 Quick Start
 =====================================
