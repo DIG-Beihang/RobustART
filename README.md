@@ -55,9 +55,44 @@ If you want to use this project to train or evaluate model(s), you can choose to
 
 We have put some example for trainging or evlaluate. You can use it as follows
 
+###Here we provided an example of evaluating resnet18 and resnet50 models on ImageNet-A and ImageNet-O
+
+1.Download the model and put into specific dictionary
 
 	cd exprs/exp/imagenet-a_o-loop
-	bash run.sh
+    mkdir save_checkpoints
+    cd save_checkpoints
+    # Then put resnet18 and resnet50 models download from robust.art in this dictionary.
+
+
+2.Edit the config file.
+
+    # change the eval_list accroding your model
+    eval_list: ["resnet18", "resnet50"]
+
+    # change the test dataset path
+    test:                             # testing data details
+        imagenet_a&o: True
+        imagenet_val_root_dir: /Your/Path/Of/Original/ImageNet
+        imagenet_a_root_dir: /Your/Path/Of/ImageNet-A
+        imagenet_o_root_dir: /Your/Path/Of/ImageNet-O
+        imagenet_o_folder: imagenet_val_for_imagenet_o_ood/
+
+        sampler:                      # sampler details
+            type: distributed         # non-repeated sampling
+        transforms:                   # torchvision transforms, flexible
+            type: ONECROP
+
+3.Edit eval.sh to specific your path saving models
+
+    PYTHONPATH=$PYTHONPATH:../../../ GLOG_vmodule=MemcachedClient=-1 \
+    # Use srun if you have
+    #spring.submit run -n2 --job-type debug --gpu \
+    python -u -m prototype.prototype.solver.imgnet_a_o_eval_solver --config config.yaml --evaluate --ckpt-filePath ./save_checkpoints
+
+4.run it
+
+    bash eval.sh
 
 
 Add Noise
