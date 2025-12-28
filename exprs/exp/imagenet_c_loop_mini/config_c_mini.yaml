@@ -79,8 +79,8 @@ data:                     # data details
 
     test:                             # testing data details
         imagenet_c: True
-        root_dir: "/mnt/lustrenew/share/xiaotianzi/imagenet-c/imagenet-c-15"
-        meta_file: "/mnt/lustrenew/share/xiaotianzi/imagenet-c/mini_label/all.json"
+        root_dir: "/mnt/afs_1/huangyushi/RobustART/datasets/imagenet-c/Tiny ImageNet-C/Tiny-ImageNet-C"
+        meta_file: "/mnt/afs_1/huangyushi/RobustART/datasets/imagenet-c/Tiny ImageNet-C/meta/all.json"
         image_reader:
             type: pil
         sampler:                      # sampler details

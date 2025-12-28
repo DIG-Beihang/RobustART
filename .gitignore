@@ -3,3 +3,6 @@ datasets/
 visualization/
 *log.txt
 *status.txt
+*results/
+*_o_ood/
+*events/

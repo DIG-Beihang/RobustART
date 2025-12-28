@@ -1,4 +1,4 @@
-PYTHONPATH=$PYTHONPATH:../../../ GLOG_vmodule=MemcachedClient=-1 \
+SKIP_DIST=1 PYTHONPATH=$PYTHONPATH:../../../ GLOG_vmodule=MemcachedClient=-1 \
 python -u -m prototype.prototype.solver.multi_eval_solver --config config.yaml --evaluate
 
 # PYTHONPATH=$PYTHONPATH:../../ GLOG_vmodule=MemcachedClient=-1 \
