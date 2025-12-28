@@ -1,0 +1,5 @@
+models/
+datasets/
+visualization/
+*log.txt
+*status.txt

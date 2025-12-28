@@ -26,7 +26,7 @@ lr_scheduler:
         warmup_lr: 0.0005
         min_lr: 0.00001
         # warmup_steps: 2500
-        # max_iter: 125000
+        max_iter: 125000
         warmup_epoch: 2
         max_epoch: 100
 
@@ -43,7 +43,7 @@ ema:
 data:
     type: imagenet
     read_from: fake
-    use_dali: True
+    use_dali: False
     batch_size: 16
     num_workers: 4
     pin_memory: True
@@ -78,8 +78,8 @@ saver:
     print_freq: 10
     val_freq: 5000
     save_many: False
-    #pretrain:
-    #    path: checkpoints/ckpt.pth.tar
+    pretrain:
+        path: models/vit_base_patch16_224_augmentation.pth.tar
     #     ignore:
     #         key:
     #             - optimizer
