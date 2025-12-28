@@ -1,8 +1,8 @@
-model:                    # architecture details
-    type: convnext_base        # model name
+model:
+    type: clip_vit_l_14
     kwargs:
-        num_classes: 1000 # number of classes
-        drop_path_rate: 0.0
+        num_classes: 1000
+        pretrained: 'tecoa2-clip' # , 'tecoa2-clip'
         # bn:
         #     use_sync_bn: False  # whether to use syncbn
         #     kwargs: {}          # kwargs of bn
@@ -102,12 +102,9 @@ data:                     # data details
             #      mean: [0.485, 0.456, 0.406]
             #      std: [0.229, 0.224, 0.225]
 
-saver:                                # saving or loading details
-    print_freq: 10                    # frequence of printing logger
-    val_freq: 5000                    # frequence of evaluating during training
-    save_many: False                  # whether to save checkpoints after every evaluation
-    pretrain:                       # pretrain model details
-        path: /data/RobustART/models/weights_convnext_base.pt
+saver:
+    pretrain:
+        path: /data/RobustART/models/ViT-L-14.pt  # 或 tecoa_eps_2.pt, ViT-L-14.pt
     #     ignore:                     # ignore keys in checkpoints
     #         key:                    # if training from scratch, pop 'optimzier' and 'last_iter'
     #             - optimizer         # if resuming from ckpt, DO NOT pop them
