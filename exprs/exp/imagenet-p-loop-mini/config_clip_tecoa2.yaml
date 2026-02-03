@@ -1,0 +1,110 @@
+model:
+    type: clip_vit_l_14_tecoa2_clip
+    kwargs:
+        num_classes: 1000
+        use_pretrain_path: False
+
+dist:                     # distributed communication
+    sync: False           # if 'True', synchronize gradients after forward 
+                          # if 'False', synchronize gradient during forward
+
+optimizer:                # optimizer details
+    type: SGD
+    kwargs:
+        nesterov: True
+        momentum: 0.9
+        weight_decay: 0.0001
+
+lr_scheduler:             # learning rate scheduler details
+    type: StepEpoch
+    kwargs:
+        lr_epochs: [30, 60, 90]
+        lr_mults: [0.1, 0.1, 0.1]
+
+        base_lr: 0.1        # initial leaning rate
+        warmup_lr: 0.4      # learning rate after warming up
+        warmup_epoch: 2  # epochs of warmup
+        max_epoch: 100    # total epochs of training
+
+label_smooth: 0.1         # label smooth ratio
+# mixup: 0.2              # mixup ratio
+# cutmix: 1.0             # cutmix ratio
+ema:                      # exponential moving average details
+    enable: False
+    kwargs:
+        decay: 0.999
+
+lms:                      # large model support: utilize cpu to save gpu memory
+    enable: False         # whether to use lms
+    kwargs:
+        limit: 12         # the soft limit in G-bytes on GPU memory allocated for tensors
+
+data:                     # data details
+    type: imagenet        # choices = {'imagenet', 'custom'}
+    read_from: fs         # choices = {'mc', 'fs', 'fake', 'osg'}
+    use_dali: False       # whether to use NVIDIA dali dataloader
+    batch_size: 4        # batch size in one GPU
+    num_workers: 8        # number of subprocesses for data loading
+    prefetch_factor: 2        # number of subprocesses for data loading
+    persistent_workers: True
+    pin_memory: True      # whether to copy Tensors into CUDA pinned memory
+    input_size: 224       # training image size
+    test_resize: 256      # testing resize image size
+
+    train:                            # training data details
+        root_dir: /mnt/lustre/share/images/train/
+        meta_file: /mnt/lustre/share/images/meta/train.txt
+        image_reader:                 # image decoding type
+            type: pil
+        sampler:                      # sampler details
+            type: distributed_iteration  # distributed iteration-based sampler
+        transforms:                   # torchvision transforms, flexible
+            type: STANDARD
+            #- type: RandomResizedCrop
+            #  kwargs:
+            #      size: 224
+            #- type: RandomHorizontalFlip
+            #- type: ColorJitter
+            #  kwargs:
+            #      brightness: 0.2
+            #      contrast: 0.2
+            #      saturation: 0.2
+            #      hue: 0.1
+            #- type: ToTensor
+            #- type: Normalize
+            #  kwargs:
+            #      mean: [0.485, 0.456, 0.406]
+            #      std: [0.229, 0.224, 0.225]
+
+    test:                             # testing data details
+        imagenet_p: True
+        root_dir: /data/RobustART/datasets/imagenet-p
+        sampler:                      # sampler details
+            type: distributed         # non-repeated sampling
+        transforms:                   # torchvision transforms, flexible
+            type: JUSTNORM
+            #- type: Resize
+            #  kwargs:
+            #      size: [256, 256]
+            #- type: CenterCrop
+            #  kwargs:
+            #      size: [224, 224]
+            #- type: ToTensor
+            #- type: Normalize
+            #  kwargs:
+            #      mean: [0.485, 0.456, 0.406]
+            #      std: [0.229, 0.224, 0.225]
+
+saver:                                # saving or loading details
+    print_freq: 10                    # frequence of printing logger
+    val_freq: 5000                    # frequence of evaluating during training
+    save_many: False                  # whether to save checkpoints after every evaluation
+    pretrain:                       # pretrain model details
+        path: /data/RobustART/models/tecoa2-clip/open_clip_pytorch_model.bin
+    #     ignore:                     # ignore keys in checkpoints
+    #         key:                    # if training from scratch, pop 'optimzier' and 'last_iter'
+    #             - optimizer         # if resuming from ckpt, DO NOT pop them
+    #             - last_iter
+    #         model:                  # ignore modules in model
+    #             - module.fc.weight  # if training with different number of classes, pop the keys 
+    #             - module.fc.bias    # of last fully-connected layers

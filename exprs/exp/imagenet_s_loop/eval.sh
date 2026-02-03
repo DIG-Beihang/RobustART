@@ -1,9 +1,24 @@
-T=`date +%m%d%H%M`
-PYTHONPATH=$PYTHONPATH:../../../ GLOG_vmodule=MemcachedClient=-1 \
-# Use srun if you have
-#spring.submit run -r -n2 -x BJ-IDC1-10-10-30-236 --gpu --job-type=urgent
-python -u -m prototype.prototype.solver.multi_eval_decoder_resize_solver --config config.yaml --evaluate 2>&1 | tee log.train.$T
+#!/bin/bash
+set -euo pipefail
 
-#PYTHONPATH=$PYTHONPATH:../../ GLOG_vmodule=MemcachedClient=-1 \
-#srun --mpi=pmi2 -p Test -n16 --gres=gpu:8 --ntasks-per-node=8 "python -u -m prototype.solver.multi_eval_decoder_resize_solver --config config.yaml --evaluate"
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+NPROC_PER_NODE=8
 
+MASTER_PORT=${MASTER_PORT:-29500}
+CONFIGS=(
+  # config_clip_fare2.yaml
+  # config_clip_tecoa2.yaml
+  config_clip_openai.yaml
+  config_convnext_base_cvst.yaml
+  config_convnext_base.yaml
+  config_convnextv2_base.yaml
+  config_vit_base.yaml
+  config_vit_base_cvst.yaml
+)
+
+for cfg in "${CONFIGS[@]}"; do
+  echo "[eval] ${cfg}"
+  PYTHONPATH=${PYTHONPATH:-}:../../../ GLOG_vmodule=MemcachedClient=-1 \
+  torchrun --nproc_per_node="${NPROC_PER_NODE}" --master_port="${MASTER_PORT}" \
+    -m prototype.prototype.solver.multi_eval_decoder_resize_solver --config "${cfg}" --evaluate
+done

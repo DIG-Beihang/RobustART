@@ -25,7 +25,7 @@ lr_scheduler:
         warmup_lr: 0.4
         min_lr: 0.0
         # warmup_steps: 2500
-        # max_iter: 125000
+        max_iter: 125000
         warmup_epoch: 2
         max_epoch: 100
 label_smooth: 0.1
@@ -41,7 +41,7 @@ ema:
 data:
     type: imagenet
     read_from: fake
-    use_dali: True
+    use_dali: False
     batch_size: 32
     num_workers: 4
     pin_memory: True
@@ -76,8 +76,8 @@ saver:
     print_freq: 10
     val_freq: 5000
     save_many: False
-    #pretrain:
-    #    path: checkpoints/ckpt.pth.tar
+    pretrain:
+       path: models/mobilenet_v3_large_x1_4_augmix.pth.tar
     #     ignore:
     #         key:
     #             - optimizer

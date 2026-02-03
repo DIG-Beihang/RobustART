@@ -1,0 +1,83 @@
+model_src:
+    type: resnet50_official
+    kwargs:
+        bn:
+            use_sync_bn: False
+            kwargs: {}
+
+model_tgt:
+    type: resnet50_official
+    kwargs:
+        bn:
+            use_sync_bn: False
+            kwargs: {}
+
+optimizer:
+    type: SGD
+    kwargs:
+        nesterov: True
+        momentum: 0.9
+        weight_decay: 0.0001
+
+lr_scheduler:
+    type: CosineEpoch
+    kwargs:
+        base_lr: 0.1
+        warmup_lr: 0.4
+        min_lr: 0.0
+        # warmup_steps: 2500
+        # max_iter: 125000
+        warmup_epoch: 2
+        max_epoch: 100
+   
+dist:
+    sync: False
+
+data:
+    type: imagenet
+    read_from: fs
+    use_dali: False
+    batch_size: 64
+    num_workers: 2
+    pin_memory: True
+    input_size: 224
+    test_resize: 256
+
+    train:
+        root_dir: /mnt/afs_1/huangyushi/RobustART/datasets/images/train/
+        meta_file: /mnt/afs_1/huangyushi/RobustART/datasets/images/meta/train.txt
+        image_reader:
+            type: pil
+        sampler:
+            type: distributed_iteration
+        transforms:
+            type: STANDARD
+
+    test:
+        root_dir: /mnt/afs_1/huangyushi/RobustART/datasets/images/val_pre/
+        meta_file: /mnt/afs_1/huangyushi/RobustART/datasets/images/meta/val.txt
+        image_reader:
+            type: pil
+        sampler:
+            type: distributed
+        transforms:
+            type: ONECROP
+        evaluator:
+            type: imagenet
+            kwargs:
+                topk: [1, 5]
+
+saver:
+    print_freq: 10
+    val_freq: 5000
+    save_many: False
+    pretrain:
+        path_src: ../../../model_zoo_exp/nas_robust_expr/bn_multi_adv_train/checkpoints/ckpt.pth.tar
+        path_tgt: ../../../model_zoo_exp/nas_robust_expr/pgd_adv_train/checkpoints_40iter/ckpt.pth.tar
+    #     ignore:
+    #         key:
+    #             - optimizer
+    #             - last_iter
+    #         model:
+    #             - module.fc.weight
+    #             - module.fc.bias
