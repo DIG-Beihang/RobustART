@@ -1,0 +1,12 @@
+pillow==8.2.0
+numpy==1.19.4
+torch==1.8.0
+torchvision==0.9.0
+foolbox==3.0.4
+adversarial-robustness-toolbox
+requests
+einops
+torchsummary
+timm
+git+https://github.com/fra31/auto-attack
+git+https://github.com/ildoonet/pytorch-gradual-warmup-lr.git
