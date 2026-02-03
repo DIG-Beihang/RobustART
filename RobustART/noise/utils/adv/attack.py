@@ -45,7 +45,7 @@ def pgd_l1(input, label, model, eps, input_size, eps_step, max_iter, batch_size)
     # using ART to gen PGD L1
     classifier = PyTorchClassifier(model=model, loss=nn.CrossEntropyLoss(), input_shape=(3, input_size, input_size), nb_classes=1000, clip_values=(0, 1), preprocessing=((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)), device_type='gpu')
     attack = ProjectedGradientDescentPyTorch(estimator=classifier, norm=1, eps=eps, eps_step=eps_step, max_iter=max_iter, num_random_init=1, batch_size=batch_size, verbose=False)
-    adv_pgdl1 = attack.generate(x=input.cpu(), y=label.cpu())
+    adv_pgdl1 = attack.generate(x=input.cpu().detach().numpy(), y=label.cpu().detach().numpy())
     return torch.from_numpy(adv_pgdl1).cuda()
 
 

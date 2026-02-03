@@ -6,3 +6,5 @@ visualization/
 *results/
 *_o_ood/
 *events/
+**/__pycache__/
+*tar.gz
