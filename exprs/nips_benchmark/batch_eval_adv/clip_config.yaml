@@ -35,10 +35,9 @@ dist:
 
 data:
     type: imagenet
-    # read_from: fake
     read_from: fs
     use_dali: False
-    batch_size: 64
+    batch_size: 32
     num_workers: 2
     pin_memory: True
     input_size: 224

@@ -1,12 +1,8 @@
-model:                    # architecture details
-    type: resnet18        # model name
+model:
+    type: clip_vit_l_14_fare2_clip
     kwargs:
-        num_classes: 1000 # number of classes
-        bn:
-            use_sync_bn: False  # whether to use syncbn
-            kwargs: {}          # kwargs of bn
-
-eval_list: ["resnet18c_x0_125", "resnet18c_x0_25", "resnet18c_x0_5", "resnet152", "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2", "resnet5400", "regnetx_3200m", "regnetx_4000m", "regnetx_6400m", "regnety_200m", "regnety_400m", "regnety_600m", "regnety_800m", "regnety_1600m", "regnety_3200m", "regnety_4000m", "regnety_6400m", "bignas_resnet18_9M", "bignas_resnet18_37M", "bignas_resnet18_50M", "bignas_resnet18_49M", "bignas_resnet18_65M", "bignas_resnet18_107M", "bignas_resnet18_125M", "bignas_resnet18_150M", "bignas_resnet18_312M", "bignas_resnet18_403M", "bignas_resnet18_492M", "bignas_resnet18_1555M", "bignas_det_resnet18_1930M", "bignas_resnet50_2954M", "bignas_resnet50_3145M", "bignas_resnet50_3811M", "dmcp_resnet18_47M", "dmna_resnet18_1800M", "shufflenet_v2_x0_5", "shufflenet_v2_x1_0", "shufflenet_v2_x1_5", "shufflenet_v2_x2_0", "oneshot_supcell_9M", "oneshot_supcell_27M", "oneshot_supcell_37M", "oneshot_supcell_55M", "oneshot_supcell_70M", "oneshot_supcell_91M", "oneshot_supcell_96M", "oneshot_supcell_113M", "oneshot_supcell_168M", "oneshot_supcell_304M", "oneshot_supcell_1710M", "oneshot_supcell_3072M", "crnas_resnet18c", "crnas_resnet50c", "crnas_resnet101c", "efficientnet_b0", "efficientnet_b1", "efficientnet_b2", "efficientnet_b3", "efficientnet_b4", "efficientnet_b5", "efficientnet_b6", "efficientnet_b7", "mobilenet_v3_small_x0_35", "mobilenet_v3_small_x0_5", "mobilenet_v3_small_x0_75", "mobilenet_v3_small_x1_0", "mobilenet_v3_small_x1_4", "mobilenet_v3_large_x0_35", "mobilenet_v3_large_x0_5", "mobilenet_v3_large_x0_75", "mobilenet_v3_large_x1_0", "mobilenet_v3_large_x1_4", "googlenet", "Registry"]
+        num_classes: 1000
+        use_pretrain_path: False
 
 dist:                     # distributed communication
     sync: False           # if 'True', synchronize gradients after forward 
@@ -45,10 +41,12 @@ lms:                      # large model support: utilize cpu to save gpu memory
 
 data:                     # data details
     type: imagenet        # choices = {'imagenet', 'custom'}
-    read_from: fake         # choices = {'mc', 'fs', 'fake', 'osg'}
+    read_from: fs         # choices = {'mc', 'fs', 'fake', 'osg'}
     use_dali: False       # whether to use NVIDIA dali dataloader
     batch_size: 64        # batch size in one GPU
-    num_workers: 4        # number of subprocesses for data loading
+    num_workers: 8        # number of subprocesses for data loading
+    prefetch_factor: 2        # number of subprocesses for data loading
+    persistent_workers: True
     pin_memory: True      # whether to copy Tensors into CUDA pinned memory
     input_size: 224       # training image size
     test_resize: 256      # testing resize image size
@@ -79,12 +77,14 @@ data:                     # data details
                   std: [0.229, 0.224, 0.225]
 
     test:                             # testing data details
-        root_dir: /mnt/lustre/share/images/val/
-        meta_file: /mnt/lustre/share/imagenet_noise/meta/mini_val_s.txt
+        save_acc_var_neg: True
+        root_dir: /data/RobustART/datasets/images/val/
+        meta_file: /data/RobustART/datasets/images/meta/val.txt
         image_reader:
             type: pil
         sampler:                      # sampler details
             type: distributed         # non-repeated sampling
+        limit_samples: null          # Limit number of test samples (e.g., 1000 for quick testing). Set to null to use all samples.
         transforms:                   # torchvision transforms, flexible
             # type: ONECROP
             - type: Resize
@@ -109,7 +109,7 @@ saver:                                # saving or loading details
     val_freq: 5000                    # frequence of evaluating during training
     save_many: False                  # whether to save checkpoints after every evaluation
     pretrain:                       # pretrain model details
-        path: /mnt/lustrenew/xiaotianzi/Spring/prototype-server/exp/baseline-r18/checkpoints/ckpt.pth.tar
+        path: /data/RobustART/models/fare2-clip/open_clip_pytorch_model.bin
     #     ignore:                     # ignore keys in checkpoints
     #         key:                    # if training from scratch, pop 'optimzier' and 'last_iter'
     #             - optimizer         # if resuming from ckpt, DO NOT pop them
