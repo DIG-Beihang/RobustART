@@ -8,3 +8,4 @@ visualization/
 *events/
 **/__pycache__/
 *tar.gz
+.DS_Store
